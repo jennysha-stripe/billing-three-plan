@@ -36,7 +36,7 @@ card.addEventListener('change', ({error}) => {
 document.querySelector('#submit').addEventListener('click', function(evt) {
   evt.preventDefault();
   document.querySelector('button').disabled = true;
-  // Initiate payment
+  // create the payment method using card details entered in Elements
   createPaymentMethod(stripe, card);
 });
 
@@ -44,6 +44,7 @@ var createPaymentMethod = function(stripe, card) {
 
   // Create a token with the card details
   var cardholderEmail = document.querySelector('#email').value;
+  var coupon = document.querySelector('#coupon').value;
   stripe
     .createPaymentMethod('card', card, {
       billing_details: {
@@ -63,7 +64,8 @@ var createPaymentMethod = function(stripe, card) {
           body: JSON.stringify({
             email: cardholderEmail,
             payment_method: result.paymentMethod.id,
-            plan: 'small'
+            plan: 'small',
+            coupon: coupon
           })
           });
         }
@@ -94,11 +96,11 @@ function handleSubscription(subscription) {
       stripe.confirmCardPayment(client_secret).then(function(result) {
         if (result.error) {
           // Display error message in your UI.
-          // The card was declined (i.e. insufficient funds, card has expired, etc)
-          //changeLoadingState(false);
+
           showError(result.error.message);
         } else {
-          // Show a success message to your customer
+          // Now that payment method is confirmed, 
+          // retrieve charge object from the subscription ID
           fetch('/charge-from-sid', {
             method: 'post',
             headers: {
@@ -140,7 +142,7 @@ var displayCharge = function(charge) {
   document.querySelector('code').textContent = chargeJson;
 };
 
-
+/* Shows any error messages to the customer (declines, input errors, coupon errors) */
 var showError = function(errorMsgText) {
   document.querySelector('button').disabled = false;
   var errorMsg = document.querySelector(".field-error");

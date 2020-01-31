@@ -487,6 +487,7 @@ input[type='text']::placeholder {
 }
 .combo-inputs > .combo-inputs-row:first-child input:first-child {
   border-radius: var(--radius) 0 0 0;
+  box-shadow: 2px -3px 5px rgba(0, 0, 0, .5);
 }
 .combo-inputs > .combo-inputs-row:first-child input:last-child {
   border-radius: 0 var(--radius) 0 0;

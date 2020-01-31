@@ -23,8 +23,8 @@ get '/ent' do
   erb :ent
 end
 
+#creates customer with default payment method and subscription
 post '/create-customer' do
-  puts "create-customer"
   content_type 'application/json'
   data = JSON.parse request.body.read
   begin
@@ -45,8 +45,7 @@ post '/create-customer' do
     else
       plan = PLAN_ENT
     end
-    #if data['plan'] === 'personal'
-    #  plan = ENV['PLAN_PERSONAL']
+
     subscription = Stripe::Subscription.create(
       customer: customer.id,
       items: [
@@ -54,32 +53,35 @@ post '/create-customer' do
           plan: plan
         }
       ],
-      #coupon: 'bxWVOEbQ',
+      coupon: data['coupon'],
       expand: ['latest_invoice.payment_intent']
     )
     subscription.to_json
   rescue Stripe::CardError => e
       # Handle "hard declines" e.g. insufficient funds, expired card, etc
-      # See https://stripe.com/docs/declines/codes for more
+      {
+        error: e.message
+      }.to_json
+    rescue Stripe::StripeError => e
+      # Handle coupon errors
       {
         error: e.message
       }.to_json
     end
 end
 
+#retrieve subscription
 post '/subscription' do
-  puts "subscription"
   content_type 'application/json'
   data = JSON.parse request.body.read
 
   subscription = Stripe::Subscription.retrieve(data['subscriptionId'])
   subscription.to_json
 
-  puts subscription
 end
 
+#retrieve the charge object from subscription object
 post '/charge-from-sid' do
-  puts "charge-from-sid"
   content_type 'application/json'
   data = JSON.parse request.body.read
 
