@@ -17,22 +17,22 @@ SASSYPRODUCTS is a simple SaaS product that is offering 50% off the first month 
 5. User sees confirmation with amount of first charge, Stripe charge ID, and the charge object
  
 ## Stripe Products and APIs:
-SAASYPRODUCT’s subscription management is built using Stripe’s Billing Product and APIs. To begin, I created a Product to represent the service. I then attached three Plans to the product that represent each of SAASYPRODUCT’s pricing plans. When creating the plans, I set the price and billing interval. You can create Products and Plans via the API or in the Dashboard. Because I was creating these plans once, I decided to create them in the Dashboard. 
+SAASYPRODUCT’s subscription management is built using [Stripe’s Billing Product and APIs](https://stripe.com/docs/billing). To begin, I created a [product](https://stripe.com/docs/billing/subscriptions/products-and-plans#products) to represent the service. I then attached three [plans](https://stripe.com/docs/billing/subscriptions/products-and-plans#plans-detail) to the product that represent each of SAASYPRODUCT’s pricing plans. When creating the plans, I set the price and billing interval. You can create products and plans via the API or in the Dashboard. Because I was creating these plans once, I decided to create them in the Dashboard. 
 
-Upon plan creation, plan IDs are generated that uniquely identify the plans so you can attach them to Customers. The association between a plan and a customer is a Subscription. 
+Upon plan creation, plan IDs are generated that uniquely identify the plans so you can attach them to [customers](https://stripe.com/docs/billing/customer). The association between a plan and a customer is a [subscription](https://stripe.com/docs/billing/subscriptions/set-up-subscription). 
 
 ## Approach:
-To set up subscriptions on SAASYPRODUCT’s website, I followed the instructions in Stripe’s developer docs.  Here are the high-level steps for implementing this:
+To set up subscriptions on SAASYPRODUCT’s website, I followed the [instructions](https://stripe.com/docs/billing/subscriptions/set-up-subscription) in Stripe’s developer docs.  Here are the high-level steps for implementing this:
 
 **Client Side**
 1.    Setup Stripe Elements using Publishable API key and use Elements to create payment form
-2.    Use createPaymentMethods to convert the payment information received in Elements to a PaymentMethod
-3.    Send the PaymentMethod to the Server
+2.    Use createPaymentMethods to convert the payment information received in Elements to a paymentMethod
+3.    Send the paymentMethod to the Server
 
 **Server Side**:
 
-4. Using the PaymentMethod received from Client, create a Customer using Stripe’s Secret Key. This attaches the credit card submitted as the default payment method method for the customer
-5. To sign a Customer up for a Plan, create a Subscription using Stripe’s Secret Key. This will charge the customer’s default payment method at the beginning of each billing cycle. 
+4. Using the paymentMethod received from Client, create a customer using Stripe’s Secret Key. This attaches the credit card submitted as the default payment method for the customer
+5. To sign a customer up for a plan, create a subscription using Stripe’s Secret Key. This will charge the customer’s default payment method at the beginning of each billing cycle. 
 6. Send subscription information back to Client to display confirmation
 
 ![Billing Diagram](/Billing-diagram.png)
