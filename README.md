@@ -35,7 +35,7 @@ To set up subscriptions on SAASYPRODUCT’s website, I followed the [instruction
 5. To sign a customer up for a plan, create a subscription using Stripe’s Secret Key. This will charge the customer’s default payment method at the beginning of each billing cycle. 
 6. Send subscription information back to Client to display confirmation
 
-![Billing Diagram](/Billing-diagram.png)
+![Billing Diagram](/billing.png)
 
 Stripe Elements made development very simple because of the pre-built UI components. Using Stripe Elements avoids bearing the burden of PCI compliance by not needing to handle the credit card data on my server and instead sending it directly to Stripe from the client. 
 
